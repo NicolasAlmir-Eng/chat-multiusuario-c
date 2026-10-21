@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  servidor:
+    build: .
+    container_name: chat_servidor
+    ports:
+      - "9999:9999"
+    command: ["./servidor"]
+    stdin_open: true
+    tty: true
+    networks:
+      - chat_net
+
+  cliente1:
+    build: .
+    container_name: chat_cliente1
+    depends_on:
+      - servidor
+    command: ["./cliente", "servidor"]
+    stdin_open: true
+    tty: true
+    networks:
+      - chat_net
+
+  cliente2:
+    build: .
+    container_name: chat_cliente2
+    depends_on:
+      - servidor
+    command: ["./cliente", "servidor"]
+    stdin_open: true
+    tty: true
+    networks:
+      - chat_net
+
+networks:
+  chat_net:
+    driver: bridge
